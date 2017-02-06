@@ -4,7 +4,6 @@
 Command
 --------------------
 >npm init
-
 To create package.json file (dependancies)
 
 >npm install
