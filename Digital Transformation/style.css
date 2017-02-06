@@ -1,0 +1,39 @@
+.x_panel_scroll {
+    height: 400px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+.progress-bar {
+	width: 100%;
+}
+.progress-bar-empty {
+	width: 0;
+}
+
+.progress {
+    color: black;
+}
+
+.progress::-moz-progress-bar { background: #0063a6; }
+
+
+#myProgress {
+  /*position: relative;
+  width: 100%;
+  height: 30px;*/
+  color: red;
+  background-color: red;
+}
+
+#myBar {
+  position: absolute;
+  width: 10%;
+  height: 100%;
+  background-color: #4CAF50;
+}
+
+#label {
+  text-align: center;
+  line-height: 30px;
+  color: white;
+}
