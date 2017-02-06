@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Map</title>
+    <!-- Bootstrap -->	
+    <link href="bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="nprogress.css" rel="stylesheet">
+    <!-- Custom Theme Style -->
+    <link href="custom.min.css" rel="stylesheet">
+    <!-- bootstrap-progressbar -->
+    <link href="bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
+	
+	<link href="style.css" rel="stylesheet">
+	<link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+	
+</head>
+
+<body class="nav-md" ng-controller="AreaCtrl" ng-app="myApp">
+    <div class="container body">
+        <div class="main_container">
+            <!-- page content -->
+            <div class="right_col" role="main">
+                <div class="">
+                    <div class="clearfix"></div>
+                    <div class="row">
+                        <div class="col-md-9 col-sm-9 col-xs-12">
+                            <div class="x_panel">
+                                <div class="x_content">
+									<div id="map" style="height:625px;"></div>
+                                </div>								
+                            </div>
+                        </div>
+					
+                        <div class="col-md-3 col-sm-3 col-xs-12">							
+                            <div class="x_panel">
+                                <div class="x_content">
+                                    <div id="echartGauge" style="height:200px;"></div>
+                                </div>
+							</div>
+							
+							<div class="clearfix"></div>
+							
+                            <div>
+                                <div class="x_title">
+                                    <div class="col-md-12" style="margin: 10px 0px -10px;">
+                                        <!--Heading-->
+                                        <div class="col-md-4" align="left">
+                                            <p style="font-weight: 400">Area</p>
+                                        </div>
+                                        <div class="col-md-4" align="center">
+                                            <p style="font-weight: 400">pH < 7</p>
+                                        </div>
+                                        <div class="col-md-4" align="center">
+                                            <p style="font-weight: 400">pH > 7</p>
+                                        </div>
+                                    </div>                                    
+                                </div>
+                                <div class="x_content x_panel x_panel_scroll" style="height:394px;">
+                                    <div class="row" style="font-size: 70%; margin: 7px -5px;">
+                                        <div class="col-md-12">						
+                                            <!-- Area details -->
+											<!--div ng-repeat="area in areas | unique: 'location'" class="col-md-12"-->
+											<div ng-repeat="area in uniqueLocations" class="col-md-12" >													
+												<div class="col-md-4">
+													<p>{{area.name}}</p>
+												</div>												
+												<div class="col-md-4">		
+													<div class="progress">
+														<div class="w3-progressbar w3-red" style="width:{{area.redPer}}%">
+														  <div class="w3-center w3-text-gray">{{area.redPer}}%</div>
+														</div>
+													</div>
+													  <!--div class="progress right">											
+														<!--progress value="{{area.redPer}}" max="100">{area.redPer}}</progress-->
+														<!--div class="progress-bar progress-bar-danger" data-transitiongoal="{{area.redPer}}" >{{area.redPer}}</div>
+													</div-->
+												</div>
+												<div class="col-md-4">
+													<div class="progress">
+														<div class="w3-progressbar w3-green" style="width:{{area.greenPer}}%">
+														  <div class="w3-center w3-text-gray">{{area.greenPer}}%</div>
+														</div>
+													 </div>
+												<!--div class="progress">													
+													<progress class="progress-bar" value="{{area.greenPer}}" max="100">{{area.greenPer}}</progress>
+													<!--div class="progress-bar progress-bar-success" data-transitiongoal="{{area.greenPer}}">{{area.greenPer}}</div>
+												</div-->
+												</div>
+											</div>											
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /page content -->
+
+        </div>
+		</script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
+		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCmpM5yhdPtdZJMhhNF4ctpda-l6kNufNQ&libraries=visualization">					
+		</script>
+		<!-- jQuery -->
+		<script src="jquery.min.js"></script>
+		<!-- Bootstrap -->
+		<script src="bootstrap.min.js"></script>
+		<!-- FastClick -->
+		<script src="fastclick.js"></script>
+		<!-- NProgress -->
+		<script src="nprogress.js"></script>
+		<!-- ECharts -->
+		<script src="echarts.min.js"></script>
+		<script src="world.js"></script>
+		<!-- bootstrap-progressbar -->
+		<script src="bootstrap-progressbar.min.js"></script>
+		<!-- Custom Theme Scripts -->
+		<script src="custom.min.js"></script>
+		
+		<script src="controllers.js"></script>
+    </div>
+
+	<!--input id="performance"  value={{performance}} /-->
+    <script>
+        //var echartMap = echarts.init(document.getElementById('echart_world_map'), theme);
+		//var echartMap = echarts.init(document.getElementById('map'));
+        //var echartGauge = echarts.init(document.getElementById('echartGauge'), theme);
+		var echartGauge = echarts.init(document.getElementById('echartGauge'));
+			
+		function test(data){
+			
+		   //alert(data);		   
+		   
+		   echartGauge.setOption({
+				tooltip: {
+					formatter: "{a} <br/>{b} : {c}%"
+				},
+				series: [{
+					name: 'Performance',
+					type: 'gauge',
+					center: ['50%', '50%'],
+					startAngle: 140,
+					endAngle: -140,
+					min: 0,
+					max: 100,
+					precision: 0,
+					splitNumber: 10,
+					axisLine: {
+						show: true,
+						lineStyle: {
+							color: [
+								[0.5, 'red'],
+								[1, 'green']                           
+							],
+							width: 30
+						}
+					},
+					axisTick: {
+						show: true,
+						splitNumber: 5,
+						length: 8,
+						lineStyle: {
+							color: '#eee',
+							width: 1,
+							type: 'solid'
+						}
+					},
+					axisLabel: {
+						show: true,
+						formatter: function(v) {
+							switch (v + '') {
+								case '20':
+									return 'Ph<7';
+								case '80':
+									return 'Ph>7';
+								default:
+									return '';
+							}
+						},
+						textStyle: {
+							color: '#333'
+						}
+					},
+					splitLine: {
+						show: true,
+						length: 30,
+						lineStyle: {
+							color: '#eee',
+							width: 2,
+							type: 'solid'
+						}
+					},
+					pointer: {
+						length: '80%',
+						width: 8,
+						color: 'auto'
+					},
+					title: {
+						show: true,
+						offsetCenter: ['-65%', -10],
+						textStyle: {
+							color: '#333',
+							fontSize: 15
+						}
+					},
+					detail: {
+						show: true,
+						backgroundColor: 'rgba(0,0,0,0)',
+						borderWidth: 0,
+						borderColor: '#ccc',
+						width: 100,
+						height: 40,
+						offsetCenter: ['-60%', 10],
+						formatter: '{value}%',
+						textStyle: {
+							color: 'auto',
+							fontSize: 30
+						}
+					},
+					data: [{
+						value: data,
+						name: 'Performance'
+					}]
+				}]
+			});  
+        } 
+    </script>
+	
+</body>
+
+</html>
